@@ -53,11 +53,17 @@ The collections are pre-configured to use the built-in `account` client on the `
 
 1. Go to the Keycloak Admin Console: <http://127.0.0.1:8080/admin>
 2. Sign in with `admin` / `admin`.
-3. In the left sidebar, click **Clients**.
-4. Open the **`account`** client.
+3. In the left sidebar, click **Clients** and open the **`account`** client.
+
+   ![Select the account client in the Keycloak admin console](assets/01-select-acoutn.png)
+
+4. On the **Settings** tab, scroll to **Capability config** and toggle **Client authentication** to **On**, then click **Save**.
+
+   ![Enable Client authentication on the account client](assets/02-enable-client-credentials.png)
+
 5. Switch to the **Credentials** tab and copy the **client secret** value.
 
-> If the **Credentials** tab is not visible, make sure **Client authentication** is enabled on the client's **Settings** tab, then save and refresh.
+> The **Credentials** tab only appears once **Client authentication** is enabled.
 
 ## 4. Configure the `oauth2` environment in Bruno
 
