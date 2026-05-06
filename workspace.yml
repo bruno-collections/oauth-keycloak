@@ -1,0 +1,16 @@
+opencollection: 1.0.0
+info:
+  name: "oauth2-keyclock"
+  type: workspace
+
+collections:
+  - name: "keycloak-password-credentials"
+    path: "collections/keycloak-password-credentials"
+  - name: "keycloak-client-credentials"
+    path: "collections/keycloak-client-credentials"
+  - name: "keycloak-authorization_code"
+    path: "collections/keycloak-authorization_code"
+
+specs:
+
+docs: ''
