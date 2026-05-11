@@ -1,6 +1,18 @@
 # Keycloak OAuth 2.0 Workspace for Bruno
 
-A ready-to-use Bruno workspace for trying out the OAuth 2.0 flows against a local [Keycloak](https://www.keycloak.org/) server. It ships with three collections, one for each supported grant type:
+A ready-to-use Bruno workspace for exploring authentication flows. It includes OAuth 2.0 collections backed by a local [Keycloak](https://www.keycloak.org/) server, plus a dedicated **Authentications** collection that demonstrates all the other auth types Bruno supports natively.
+
+## Workspace Overview
+
+![Bruno workspace overview showing all collections](assets/03-workspace-overview.png)
+
+---
+
+## Collections
+
+### OAuth 2.0 — Keycloak (3 collections)
+
+One collection per supported OAuth 2.0 grant type:
 
 - **Authorization Code** (with PKCE) — `collections/keycloak-authorization_code`
 - **Client Credentials** — `collections/keycloak-client-credentials`
@@ -13,6 +25,61 @@ Each collection contains the same three sample requests so you can compare how B
 | `user_info_coll-auth` | Inherits OAuth 2.0 from the collection |
 | `user_info_request-auth` | OAuth 2.0 configured directly on the request |
 | `user_info_custom` | Bearer token referenced via `{{$oauth2.credentials.access_token}}` |
+
+### Authentications — Other Auth Types (1 collection)
+
+`collections/authentications` contains four ready-to-run requests that demonstrate every other auth scheme Bruno supports, all pointed at [httpbin.org](https://httpbin.org) so no additional server setup is needed:
+
+| Request | Auth type | Endpoint | Credentials |
+| --- | --- | --- | --- |
+| `basic-auth` | Basic Auth | `GET https://httpbin.org/basic-auth/usebruno/bruno123` | username: `usebruno` / password: `bruno123` |
+| `bearer-auth` | Bearer Token | `GET https://httpbin.org/bearer` | token: `usebruno` |
+| `digest-auth` | Digest Auth | `GET https://httpbin.org/digest-auth/auth/usebruno/bruno123` | username: `usebruno` / password: `bruno123` |
+| `api-key` | API Key | `GET https://httpbin.org/headers` | header `X-Api-Key: usebruno` |
+
+#### Basic Auth
+
+Sends credentials as a Base64-encoded `Authorization: Basic …` header. Bruno encodes the username and password automatically.
+
+```yaml
+auth:
+  type: basic
+  username: usebruno
+  password: bruno123
+```
+
+#### Bearer Token
+
+Attaches a static token as `Authorization: Bearer <token>`. Useful when you already hold a token (e.g. a JWT from a previous step).
+
+```yaml
+auth:
+  type: bearer
+  token: usebruno
+```
+
+#### Digest Auth
+
+A challenge-response scheme where Bruno performs the MD5 handshake with the server automatically — no manual nonce handling required.
+
+```yaml
+auth:
+  type: digest
+  username: usebruno
+  password: bruno123
+```
+
+#### API Key
+
+Injects a custom key/value pair into the request. The `placement` field controls whether it goes into a header or a query parameter.
+
+```yaml
+auth:
+  type: apikey
+  key: X-Api-Key
+  value: usebruno
+  placement: header   # or "query"
+```
 
 ## Prerequisites
 
@@ -110,7 +177,18 @@ Repeat steps 4 and 5 for each grant-type collection you want to try.
 | `keycloak-client-credentials` | `client_credentials` | Service-to-service flow; no user login needed. |
 | `keycloak-password-credentials` | `password` | Pre-filled with `admin` / `admin` for the master realm. |
 
+## Auth type quick reference
+
+| Collection | Auth type | Notes |
+| --- | --- | --- |
+| `authentications` | Basic Auth | Base64-encoded username + password via `Authorization` header. |
+| `authentications` | Bearer Token | Static token sent as `Authorization: Bearer <token>`. |
+| `authentications` | Digest Auth | Challenge-response; Bruno handles the MD5 handshake automatically. |
+| `authentications` | API Key | Custom key/value injected into a header or query parameter. |
+
 ## Learn more
 
 - [Bruno OAuth 2.0 documentation](https://docs.usebruno.com/auth/oauth2-2.0/collection-level-configuration)
+- [Bruno authentication documentation](https://docs.usebruno.com/auth/overview)
 - [Keycloak getting started with Docker](https://www.keycloak.org/getting-started/getting-started-docker)
+- [httpbin.org — HTTP request & response service](https://httpbin.org)

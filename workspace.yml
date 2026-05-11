@@ -10,6 +10,8 @@ collections:
     path: "collections/keycloak-client-credentials"
   - name: "keycloak-authorization_code"
     path: "collections/keycloak-authorization_code"
+  - name: "authentications"
+    path: "collections/authentications"
 
 specs:
 
